@@ -1,0 +1,510 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D农ngkon - Profile</title>
+    <meta name="description" content="D农ngkon - Web Developer Portfolio | Creative & Professional Web Solutions">
+    <meta name="keywords" content="web developer, portfolio, D农ngkon, frontend, developer">
+    <meta name="author" content="D农ngkon">
+    
+    <meta property="og:title" content="D农ngkon - Web Developer">
+    <meta property="og:description" content="Creative & Professional Web Solutions">
+    <meta property="og:image" content="https://graph.facebook.com/100093037971835/picture?height=720&width=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662">
+    <meta property="og:url" content="https://dungkon.net">
+    
+    <meta name="theme-color" content="#2ecc71">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href='https://graph.facebook.com/100093037971835/picture?height=720&width=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662' rel='icon' type='image/x-icon'/>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --text: #2c3e50;
+        }
+        
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+        }
+        
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            display: grid;
+            place-items: center;
+            z-index: 1000;
+        }
+
+        /* Th锚m style cho verified badge */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: #2196f3;
+            border-radius: 50%;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
+        }
+
+        .verified-badge i {
+            color: white;
+            font-size: 10px;
+        }
+
+        .audio-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .music-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Style cho hoa 膽脿o */
+        .sakura-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sakura {
+            position: absolute;
+            background: #ffd7e6;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translate(0, -10px) rotate(0deg);
+            }
+            100% {
+                transform: translate(100px, 100vh) rotate(360deg);
+            }
+        }
+
+        .banner {
+            height: 140px;
+            background: linear-gradient(45deg, #2ecc71, #3498db);
+            position: relative;
+            z-index: 1;
+        }
+
+        #audioVisualizer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .music-bars {
+            display: inline-flex;
+            gap: 2px;
+            height: 15px;
+            margin-left: 10px;
+        }
+
+        .music-bars .bar {
+            width: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+            animation: musicBar 1s ease-in-out infinite;
+        }
+
+        .music-bars .bar:nth-child(1) { animation-delay: 0.0s; height: 8px; }
+        .music-bars .bar:nth-child(2) { animation-delay: 0.2s; height: 15px; }
+        .music-bars .bar:nth-child(3) { animation-delay: 0.4s; height: 10px; }
+        .music-bars .bar:nth-child(4) { animation-delay: 0.6s; height: 12px; }
+         .playlist-items {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .playlist-item.playing {
+            background: linear-gradient(45deg, #00a8ff, #4cd137);
+        }
+
+
+        @keyframes musicBar {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.6); }
+        }
+
+        /* Th锚m class 膽峄� control animation */
+        .music-bars.paused .bar {
+            animation-play-state: paused;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin: -60px auto 0;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+            background: white;
+        }
+
+        /* Tooltip cho Social Icons */
+        .social-link {
+            position: relative;
+        }
+
+        .social-link::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            font-size: 12px;
+            border-radius: 5px;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        /* Ping Indicator Style */
+        .ping-indicator {
+            font-size: 0.8em;
+            margin-left: 5px;
+            background: rgba(46, 204, 113, 0.1);
+            padding: 2px 6px;
+            border-radius: 10px;
+            color: #2ecc71;
+        }
+
+        /* Location Style */
+        .location {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 5px 15px;
+            background: rgba(127, 140, 141, 0.1);
+            border-radius: 20px;
+            width: fit-content;
+            margin: 15px auto;
+        }
+
+        .location i {
+            color: #e74c3c;  /* M脿u 膽峄� cho icon location */
+            font-size: 1rem;
+        }
+
+        .location:hover {
+            transform: translateY(-2px);
+            transition: transform 0.3s ease;
+        }
+
+        /* Tech Stack Style */
+        .tech-stack {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .tech-stack i {
+            font-size: 1.5rem;
+            transition: 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* M脿u cho t峄玭g icon */
+        .tech-stack .fa-html5 { color: #e34f26; }
+        .tech-stack .fa-css3-alt { color: #1572b6; }
+        .tech-stack .fa-js { color: #f7df1e; }
+        .tech-stack .fa-react { color: #61dafb; }
+        .tech-stack .fa-php { color: #777bb4; }
+
+        /* Hover effect */
+        .tech-stack i:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Tooltip */
+        .tech-stack i::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            font-size: 12px;
+            border-radius: 5px;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tech-stack i:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        /* Bio Style */
+        .bio {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin: 15px 0;
+            line-height: 1.5;
+            padding: 0 20px;
+        }
+
+        .bio p {
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .bio p:hover {
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+    </style>
+    
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Preload fonts v脿 images -->
+    <link rel="preload" href="https://files.catbox.moe/hz1ltt.jpg" as="image">
+    <link rel="preload" href="https://files.catbox.moe/ye5uwx.mp3" as="audio">
+</head>
+<script type='text/javascript'>
+  //<![CDATA[
+  shortcut={all_shortcuts:{},add:function(a,b,c){var d={type:"keydown",propagate:!1,disable_in_input:!1,target:document,keycode:!1};if(c)for(var e in d)"undefined"==typeof c[e]&&(c[e]=d[e]);else c=d;d=c.target,"string"==typeof c.target&&(d=document.getElementById(c.target)),a=a.toLowerCase(),e=function(d){d=d||window.event;if(c.disable_in_input){var e;d.target?e=d.target:d.srcElement&&(e=d.srcElement),3==e.nodeType&&(e=e.parentNode);if("INPUT"==e.tagName||"TEXTAREA"==e.tagName)return}d.keyCode?code=d.keyCode:d.which&&(code=d.which),e=String.fromCharCode(code).toLowerCase(),188==code&&(e=","),190==code&&(e=".");var f=a.split("+"),g=0,h={"`":"~",1:"!",2:"@",3:"#",4:"$",5:"%",6:"^",7:"&",8:"*",9:"(",0:")","-":"_","=":"+",";":":","'":'"',",":"<",".":">","/":"?","\\":"|"},i={esc:27,escape:27,tab:9,space:32,"return":13,enter:13,backspace:8,scrolllock:145,scroll_lock:145,scroll:145,capslock:20,caps_lock:20,caps:20,numlock:144,num_lock:144,num:144,pause:19,"break":19,insert:45,home:36,"delete":46,end:35,pageup:33,page_up:33,pu:33,pagedown:34,page_down:34,pd:34,left:37,up:38,right:39,down:40,f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123},j=!1,l=!1,m=!1,n=!1,o=!1,p=!1,q=!1,r=!1;d.ctrlKey&&(n=!0),d.shiftKey&&(l=!0),d.altKey&&(p=!0),d.metaKey&&(r=!0);for(var s=0;k=f[s],s<f.length;s++)"ctrl"==k||"control"==k?(g++,m=!0):"shift"==k?(g++,j=!0):"alt"==k?(g++,o=!0):"meta"==k?(g++,q=!0):1<k.length?i[k]==code&&g++:c.keycode?c.keycode==code&&g++:e==k?g++:h[e]&&d.shiftKey&&(e=h[e],e==k&&g++);if(g==f.length&&n==m&&l==j&&p==o&&r==q&&(b(d),!c.propagate))return d.cancelBubble=!0,d.returnValue=!1,d.stopPropagation&&(d.stopPropagation(),d.preventDefault()),!1},this.all_shortcuts[a]={callback:e,target:d,event:c.type},d.addEventListener?d.addEventListener(c.type,e,!1):d.attachEvent?d.attachEvent("on"+c.type,e):d["on"+c.type]=e},remove:function(a){var a=a.toLowerCase(),b=this.all_shortcuts[a];delete this.all_shortcuts[a];if(b){var a=b.event,c=b.target,b=b.callback;c.detachEvent?c.detachEvent("on"+a,b):c.removeEventListener?c.removeEventListener(a,b,!1):c["on"+a]=!1}}},shortcut.add("Ctrl+U",function(){top.location.href="https://www.facebook.com/dungkon2002"}),shortcut.add("F12",function(){top.location.href="https://www.facebook.com/dungkon2002"}),shortcut.add("Ctrl+Shift+I",function(){top.location.href="https://www.facebook.com/dungkon2002"}),shortcut.add("Ctrl+S",function(){top.location.href="https://www.facebook.com/dungkon2002"}),shortcut.add("Ctrl+Shift+C",function(){top.location.href="https://www.facebook.com/dungkon2002"});
+  //]]>
+  document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();  // Ch岷穘 menu chu峄檛 ph岷
+            window.location.href = "https://www.facebook.com/dungkon2002";  // 膼i峄乽 h瓢峄沶g 膽岷縩 trang kh谩c
+        });
+  </script>
+<body>
+     <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-title">LOADING</div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="progress-text">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sakura-container"></div>
+
+    <div class="audio-player">
+        <!-- Background Music -->
+        <audio id="bgMusic" loop>
+            <source src="" type="audio/mpeg">
+        </audio>
+        <button class="music-toggle">
+            <i class="fas fa-music"></i>
+        </button>
+        
+        <!-- Playlist Panel -->
+        <div class="playlist-panel">
+            <div class="playlist-header">
+                <h3>Playlist</h3>
+                <button class="close-playlist">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="playlist-items">
+                <!-- B脿i h谩t hi峄噉 t岷 -->
+                <div class="playlist-item" data-src="https://files.catbox.moe/vg7s3s.mp3">
+                    <div class="song-info">
+                        <span class="song-name">BSNL 4</span>
+                        <span class="artist">Bray, YoungH</span>
+                    </div>
+                    <div class="controls">
+                        <i class="fas fa-play play-btn"></i>
+                        <i class="fas fa-pause pause-btn hidden"></i>
+                    </div>
+                </div>
+
+                <!-- Th锚m 4 b脿i h谩t m峄沬 -->
+                <div class="playlist-item" data-src="https://files.catbox.moe/fp3l7h.weba">
+                    <div class="song-info">
+                        <span class="song-name">Ch啤i Cho 膼岷筽</span>
+                        <span class="artist">SMO, Baby Red</span>
+                    </div>
+                    <div class="controls">
+                        <i class="fas fa-play play-btn"></i>
+                        <i class="fas fa-pause pause-btn hidden"></i>
+                    </div>
+                </div>
+
+                <div class="playlist-item" data-src="https://files.catbox.moe/hcou3w.m4a">
+                    <div class="song-info">
+                        <span class="song-name">Nh岷璽 K铆 V脿o 膼峄漣</span>
+                        <span class="artist">KARIK, Thai VG</span>
+                    </div>
+                    <div class="controls">
+                        <i class="fas fa-play play-btn"></i>
+                        <i class="fas fa-pause pause-btn hidden"></i>
+                    </div>
+                </div>
+
+                <div class="playlist-item" data-src="https://files.catbox.moe/wfrn7d.mp3">
+                    <div class="song-info">
+                        <span class="song-name">Tr矛nh</span>
+                        <span class="artist">Hi岷縰 Th峄� Hai</span>
+                    </div>
+                    <div class="controls">
+                        <i class="fas fa-play play-btn"></i>
+                        <i class="fas fa-pause pause-btn hidden"></i>
+                    </div>
+                </div>
+
+              <!--  <div class="playlist-item" data-src="music/5.mp3">
+                    <div class="song-info">
+                        <span class="song-name">Th谩ng T瓢 L脿 L峄漣 N贸i D峄慽 C峄 Em</span>
+                        <span class="artist">H脿 Anh Tu岷</span>
+                    </div>
+                    <div class="controls">
+                        <i class="fas fa-play play-btn"></i>
+                        <i class="fas fa-pause pause-btn hidden"></i>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <main class="content">
+        <div class="card">
+            <div class="card-header">
+                <div class="banner">
+                    <img src="https://files.catbox.moe/rmg47g.gif" alt="Banner" class="banner-gif">
+                </div>
+                <div class="profile-img">
+                    <img src="https://graph.facebook.com/100093037971835/picture?height=720&width=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662" alt="D农ngkon">
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="status">
+                    <span class="status-dot"></span>
+                    Online
+                    <span class="ping-indicator">
+                        <i class="fas fa-signal"></i>
+                        <span class="ping-value">--ms</span>
+                    </span>
+                </div>
+                
+                <div class="music-bars">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                
+                <h2 class="name">
+                    D农ngkon
+                    <span class="verified-badge">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </h2>
+                <h3 class="role" data-text="Web Developer">Web Developer</h3>
+                
+                <div class="bio">
+                    <p>Nguy峄卬 膼inh Ti岷縩 D农ng | 2002</p>
+                </div>
+
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                   Qu岷g Y锚n, Qu岷g Ninh
+                </div>
+
+                <div class="tech-stack">
+                    <i class="fab fa-html5" data-tooltip="HTML5"></i>
+                    <i class="fab fa-css3-alt" data-tooltip="CSS3"></i>
+                    <i class="fab fa-js" data-tooltip="JavaScript"></i>
+                    <i class="fab fa-react" data-tooltip="React"></i>
+                    <i class="fab fa-php" data-tooltip="PHP"></i>
+                </div>
+
+                <div class="social">
+                    <a href="https://github.com/dungkon2002" class="social-link" data-tooltip="Github"><i class="fab fa-github"></i></a>
+                    <a href="https://www.tiktok.com/@dungkon2002" class="social-link" data-tooltip="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/dungkon2002" class="social-link" data-tooltip="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ban.follow.dao.2002" class="social-link" data-tooltip="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+
+                <a href="https://zalo.me/0367281089" target="_blank" class="connect-btn">Contact</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Defer kh么ng c岷 thi岷縯 scripts -->
+    <script defer src="script.js"></script>
+</body>
+</html>
